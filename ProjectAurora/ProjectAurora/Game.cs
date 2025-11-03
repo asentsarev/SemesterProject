@@ -6,6 +6,8 @@ namespace ProjectAurora
         private static Room? previousRoom;
         private bool hasDamKey = false;
 
+        private Room? damplant;
+        private Room? controlroom;
         public Game()
         {
             CreateRooms();
@@ -49,7 +51,7 @@ namespace ProjectAurora
             Item lever = new("lever", "A heavy, stainless steel lever. It looks like it could replace a rusted, jammed control.");
             bonus.AddItem(lever);
 
-            Room? controlroom = new("Control room", "You walk deep inside the dam to the Control room. Directly ahead is the emergency restart control panel with the restart lever marked, however the levers are completely rusted and jammed shut. The only way to go is leaving and going back out to the DampPlant(outside).");
+            controlroom = new("Control room", "You walk deep inside the dam to the Control room. Directly ahead is the emergency restart control panel with the restart lever marked, however the levers are completely rusted and jammed shut. The only way to go is leaving and going back out to the DampPlant(outside).");
 
 
             // hydro area directions
@@ -76,7 +78,7 @@ namespace ProjectAurora
 
         }
 
-        private void CreateNPCs(List<Room> rooms)
+        private void CreateNPCs()
         {
         }
 

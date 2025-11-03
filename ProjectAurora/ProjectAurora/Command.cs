@@ -16,5 +16,9 @@ namespace ProjectAurora
             Name = name;
             SecondWord = secondWord;
         }
+        public bool HasSecondWord()
+        {
+            return SecondWord != null;
+        }
     }
 }
