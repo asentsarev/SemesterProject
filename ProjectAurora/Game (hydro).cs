@@ -200,28 +200,28 @@ namespace ProjectAurora
 
         }
 
-       private void TryMoveInside()
-        {
-            if (currentRoom == damplant) //Check if player is at the right location (ie Dam Plant)
+        private void TryMoveInside()
             {
-                if (hasDamKey) //check if player has the key
+                if (currentRoom == damplant) //Check if player is at the right location (ie Dam Plant)
                 {
-                    previousRoom = currentRoom;
-                    currentRoom = controlroom; // Move to the Control Room
-                    Console.WriteLine("The key clicks perfectly into a hidden lock next to the entrance.");
-                    Console.WriteLine("You turn the key and the heavy door slides open. You step inside.");
+                    if (hasDamKey) //check if player has the key
+                    {
+                        previousRoom = currentRoom;
+                        currentRoom = controlroom; // Move to the Control Room
+                        Console.WriteLine("The key clicks perfectly into a hidden lock next to the entrance.");
+                        Console.WriteLine("You turn the key and the heavy door slides open. You step inside.");
+                    }
+                    else
+                    {
+                        //if the player doesnt have the hydro key
+                        Console.WriteLine("The entrance to the control room is sealed shut. It looks like it requires a specialized key.");
+                    }
                 }
-                else
+                else //if the player is not at the Dam Plant
                 {
-                    //if the player doesnt have the hydro key
-                    Console.WriteLine("The entrance to the control room is sealed shut. It looks like it requires a specialized key.");
+                    Console.WriteLine("You can only go 'inside' the control room from the Dam Plant.");
                 }
             }
-            else //if the player is not at the Dam Plant
-            {
-                Console.WriteLine("You can only go 'inside' the control room from the Dam Plant.");
-            }
-        }
 
 
        

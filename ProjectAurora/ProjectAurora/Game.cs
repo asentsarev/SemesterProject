@@ -4,12 +4,12 @@ namespace ProjectAurora
     {
         private static Room? currentRoom;
         private static Room? previousRoom;
-        private static List<Room>? rooms;
+        private bool hasDamKey = false;
 
         public Game()
         {
             CreateRooms();
-            CreateNPCs(rooms);
+            CreateNPCs();
         }
 
         public void CreateRooms()
@@ -18,10 +18,8 @@ namespace ProjectAurora
             Room? start = new Room("Aurora Control Hub", "You stand inside the Aurora Control Hub, the heart of the last renewable energy initiative." +
                 "\r\nThe air hums with faint backup power. Screens flicker, showing maps of four darkened regions." +
                 "\r\nA workbench lies in the corner with scattered tools.\r\n");
-            rooms.Add(start);
             Room? solarDesert = new Room("Solar Desert", "The desert stretches before you. Towers of sand cover the solar field. Heat shimmers across the horizon." +
-                "\r\nThere you meet Dr. Liora Sunvale");
-            rooms.Add(solarDesert);
+                "\r\nThere you meet Dr. Liora Sunvale\r\n");
             currentRoom = start;
 
 
@@ -51,7 +49,7 @@ namespace ProjectAurora
             Item lever = new("lever", "A heavy, stainless steel lever. It looks like it could replace a rusted, jammed control.");
             bonus.AddItem(lever);
 
-            controlroom = new("Control room", "You walk deep inside the dam to the Control room. Directly ahead is the emergency restart control panel with the restart lever marked, however the levers are completely rusted and jammed shut. The only way to go is leaving and going back out to the DampPlant(outside).");
+            Room? controlroom = new("Control room", "You walk deep inside the dam to the Control room. Directly ahead is the emergency restart control panel with the restart lever marked, however the levers are completely rusted and jammed shut. The only way to go is leaving and going back out to the DampPlant(outside).");
 
 
             // hydro area directions
@@ -80,7 +78,6 @@ namespace ProjectAurora
 
         private void CreateNPCs(List<Room> rooms)
         {
-            NPC Liora = new NPC("Dr. Liora Sunvale", "", rooms.Find(x => x.ShortDescription == "Solar Desert"));
         }
 
         public void Play()
@@ -220,6 +217,30 @@ namespace ProjectAurora
 
 
         }
+
+        private void TryMoveInside()
+        {
+            if (currentRoom == damplant) //Check if player is at the right location (ie Dam Plant)
+            {
+                if (hasDamKey) //check if player has the key
+                {
+                    previousRoom = currentRoom;
+                    currentRoom = controlroom; // Move to the Control Room
+                    Console.WriteLine("The key clicks perfectly into a hidden lock next to the entrance.");
+                    Console.WriteLine("You turn the key and the heavy door slides open. You step inside.");
+                }
+                else
+                {
+                    //if the player doesnt have the hydro key
+                    Console.WriteLine("The entrance to the control room is sealed shut. It looks like it requires a specialized key.");
+                }
+            }
+            else //if the player is not at the Dam Plant
+            {
+                Console.WriteLine("You can only go 'inside' the control room from the Dam Plant.");
+            }
+        }
+
 
 
 
