@@ -116,6 +116,34 @@ namespace ProjectAurora
             bonus.SetExit("south", hydroResourcearea);
             start.SetExit("north", hydroHub);
 
+            
+            //windy highlands
+            Room? outside = new("You are outside.", "You are standing outside on the peak of the windy highlands. To the south is ridge path leading to an abandoned cabin.");
+            Room? cabin = new("You are inside the cabin.", "You've entered an old, abandoned cabin once used by maintenance crews. You can see old notes and spare parts scattered on the ground. To the east is a door which seems to lead to the garden.");
+            Room? garden = new("You are in the garden.", "You're standing in the garden, now overgrown with weeds and bushes. You can feel the cold wind on your face. To the north is an old, half-broken shed. To the south you can see the turbines turning faintly in the distance.");
+            Room? shed = new("You are in the shed.", "You are standing in the old shed. To the north is a desk with some papers sticking out.");
+            Room? turbines = new("You are at the turbines.", "You are standing outside, between the wind turbines. Some of them seem to be turned off, while others are spinning slowly. To the east is a control tower seemingly connected to the turbines. From the west you can hear a stream of water behind some trees.");
+            Room? tower = new("You are inside the tower.", "You've entered the control tower. You can hear a faint static sound in the background. To the north are some old computers faintly flickering. To the east is an office.");
+            Room? office = new("You are inside the office.", "You've entered what seems to be an administration office. You can see blueprints and written entries scattered across the floor. You can hear rustling from behind a bookshelf towards the south.");
+            Room? stream = new("You found a stream of water.", "You are standing next to a stream of water. To the north you can see an abandoned bonfire with a few tents nearby.");
+
+            outside.SetExit("south", cabin);
+
+            cabin.SetExits(outside, garden, null, null);
+
+            garden.SetExits(shed, null, turbines, cabin);
+
+            shed.SetExit("south", garden);
+
+            turbines.SetExits(garden, tower, null, stream);
+
+            tower.SetExits(null, office, null, turbines);
+
+            office.SetExit("west", tower);
+
+            stream.SetExit("east", turbines);
+
+            currentRoom = outside;
 
         }
 
