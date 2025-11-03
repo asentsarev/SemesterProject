@@ -8,6 +8,8 @@
 
         private List<Item> Items { get; } = new List<Item>();
 
+        private NPC Npc { get; set; }
+
         public Room(string shortDesc, string longDesc)
         {
             ShortDescription = shortDesc;

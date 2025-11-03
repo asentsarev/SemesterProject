@@ -26,43 +26,54 @@ namespace ProjectAurora
 
 
             // hydro rooms and their items
-            Room? hub = new("Hydro Hub", "You started walking towards the river. But you reach an area where the road separates into 4. Luckily there is a sign that reads =Welcome, you are at the Hydro Hub= /n = Outside(south), Research Center(north), Hydroelectric dam(east), Tundra forrest(west)=");
+            Room? hydroHub = new("Hydro Hub", "You started walking towards the river. But you reach an area where the road separates into 4. " +
+                "\r\nLuckily there is a sign that reads:\r\n" +
+                "=Welcome, you are at the Hydro Hub=\r\n" +
+                "=Outside(south), Research Center(north), Hydroelectric dam(east), Tundra forrest(west)=\r\n");
 
-            Room? damplant = new("The Dam Plant", "After a short stroll you arrive at the riverside with no bridge leading acoross. However there is a an obstruction that connects the two sides: A huge Hydroelectric Plant. And you see an enterance, that you can enter(inside) however there is a lock on the door");
+            Room? damplant = new("The Dam Plant", "After a short stroll you arrive at the riverside with no bridge leading acoross. \r\n" +
+                "However there is a an obstruction that connects the two sides: A huge Hydroelectric Plant. And you see an enterance, that you can enter(inside) \r\n" +
+                "however there is a lock on the door\r\n");
 
-            Room? researchcenter = new("Research Center", "You enter inside the lobby of an Aurora outpost, this building gives help and guidiance to engineers on their missions, it has 4 sections: a Library(up), the Cafeteria(right), the Lab(left) and an ominous Basement(down). The way back to the Hydro Hub is South");
+            Room? researchcenter = new("Research Center", "You enter inside the lobby of an Aurora outpost, this building gives help and guidiance to engineers on their missions, \r\n" +
+                "it has 4 sections: a Library(up), the Cafeteria(right), the Lab(left) and an ominous Basement(down). The way back to the Hydro Hub is South\r\n");
 
-            Room? resourcearea = new("Tundra Forrest", "You have entered the Tundra forrest.");
-            Item berries = new("berries", "A cluster of edible-looking berries. Maybe they could be used as bait or food.");
-            resourcearea.AddItem(berries);
-            Item pinecone = new("pinecone", "A large, sticky pinecone. It feels heavy, perhaps useful for starting a fire.");
-            resourcearea.AddItem(pinecone);
+            Room? hydroResourcearea = new("Tundra Forrest", "You have entered the Tundra forrest.\r\n");
+            Item berries = new("berries", "A cluster of edible-looking berries. Maybe they could be used as bait or food.\r\n");
+            hydroResourcearea.AddItem(berries);
+            Item pinecone = new("pinecone", "A large, sticky pinecone. It feels heavy, perhaps useful for starting a fire.\r\n");
+            hydroResourcearea.AddItem(pinecone);
 
-            Room? library = new("Library", "Loads of heavy shelves hold thousands of technical theory, documents and old logbooks. A single chair is occupied by a person reading one of the books. The lobby is downstrairs(down)");
+            Room? library = new("Library", "Loads of heavy shelves hold thousands of technical theory, documents and old logbooks. \r\nA single chair is occupied by a person reading one of the books. \r\n" +
+                "The lobby is downstrairs(down)\r\n");
 
-            Room? cafeteria = new("Caferetia", "A regular cafeteria. Near the serving station, you see a small, misplaced item lying among the cutlery. It looks like a key, dou you take it?(take key) It might come in handy later... The lobby is to the Left(left)."); Item damKey = new("key", "A small metal tool with the Aurora symbol on it. It doesn't quite fit the shape of the rest of the spoons and forks, perhaps you should investigate? (take) ");
+            Room? cafeteria = new("Caferetia", "A regular cafeteria. Near the serving station, you see a small, misplaced item lying among the cutlery. It looks like a key, dou you take it?(take key) It might come in handy later... \r\n" +
+                "The lobby is to the Left(left).\r\n"); 
+            
+            Item damKey = new("key", "A small metal tool with the Aurora symbol on it. It doesn't quite fit the shape of the rest of the spoons and forks, perhaps you should investigate? (take) \r\n");
             cafeteria.AddItem(damKey);
 
-            Room? hydrolab = new("Hydro Lab", "A workspace cluttered with beakers and other equipment. A researcher in a clean white coat is hard at work. The lobby is to the Right(right).");
+            Room? hydrolab = new("Hydro Lab", "A workspace cluttered with beakers and other equipment. A researcher in a clean white coat is hard at work. The lobby is to the Right(right).\r\n");
 
-            Room? basement = new("Basement", "A dark, seemingly abandoned utility area. The air is cold and heavy. You see a series of locked storage crates. The lobby is Up(up).");
+            Room? basement = new("Basement", "A dark, seemingly abandoned utility area. The air is cold and heavy. You see a series of locked storage crates. The lobby is Up(up).\r\n");
 
-            Room? bonus = new("Top of the Hill", "After climbing up the hill you find a forgotten toolbox. You see a box labeled levers. The only way down is back to the Tundra (south).");
-            Item lever = new("lever", "A heavy, stainless steel lever. It looks like it could replace a rusted, jammed control.");
+            Room? bonus = new("Top of the Hill", "After climbing up the hill you find a forgotten toolbox. You see a box labeled levers. The only way down is back to the Tundra (south).\r\n");
+            Item lever = new("lever", "A heavy, stainless steel lever. It looks like it could replace a rusted, jammed control.\r\n");
             bonus.AddItem(lever);
 
-            controlroom = new("Control room", "You walk deep inside the dam to the Control room. Directly ahead is the emergency restart control panel with the restart lever marked, however the levers are completely rusted and jammed shut. The only way to go is leaving and going back out to the DampPlant(outside).");
+            controlroom = new("Control room", "You walk deep inside the dam to the Control room. Directly ahead is the emergency restart control panel with the restart lever marked, \r\n" +
+                "however the levers are completely rusted and jammed shut. The only way to go is leaving and going back out to the DampPlant(outside).\r\n");
 
 
             // hydro area directions
-            hub.SetExit("south", outside);
-            hub.SetExit("east", damplant);
-            hub.SetExit("north", researchcenter);
-            hub.SetExit("west", resourcearea);
-            damplant.SetExit("west", hub);
+            hydroHub.SetExit("south", start);
+            hydroHub.SetExit("east", damplant);
+            hydroHub.SetExit("north", researchcenter);
+            hydroHub.SetExit("west", hydroResourcearea);
+            damplant.SetExit("west", hydroHub);
             damplant.SetExit("inside", controlroom);
             controlroom.SetExit("outside", damplant);
-            researchcenter.SetExit("south", hub);
+            researchcenter.SetExit("south", hydroHub);
             researchcenter.SetExit("up", library);
             researchcenter.SetExit("right", cafeteria);
             researchcenter.SetExit("left", hydrolab);
@@ -71,9 +82,10 @@ namespace ProjectAurora
             cafeteria.SetExit("left", researchcenter);
             hydrolab.SetExit("right", researchcenter);
             basement.SetExit("up", researchcenter);
-            resourcearea.SetExit("east", hub);
-            resourcearea.SetExit("north", bonus);
-            bonus.SetExit("south", resourcearea);
+            hydroResourcearea.SetExit("east", hydroHub);
+            hydroResourcearea.SetExit("north", bonus);
+            bonus.SetExit("south", hydroResourcearea);
+            start.SetExit("north", hydroHub);
 
 
         }
@@ -105,7 +117,7 @@ namespace ProjectAurora
                 Command? command = parser.GetCommand(input);
 
                 if (command == null)
-                {
+                {Console.WriteLine(currentRoom?.LongDescription);
                     Console.WriteLine("I don't know that command.");
                     continue;
                 }
@@ -170,6 +182,7 @@ namespace ProjectAurora
             {
                 previousRoom = currentRoom;
                 currentRoom = currentRoom?.Exits[direction];
+                Console.WriteLine(currentRoom?.LongDescription);
             }
             else
             {
