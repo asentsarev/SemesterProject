@@ -11,13 +11,19 @@ namespace ProjectAurora
         public string Name { get; private set; }
         public string Dialog { get; private set; }
         
-        public Room Room { get; private set; }
+        public string? LongDialog { get; private set; }
 
-        public NPC(string name, string dialog, Room room)
+        public NPC(string name, string dialog)
         {
             Name = name;
             Dialog = dialog;
-            Room = room;
+        }
+
+        public NPC(string name, string dialog, string longDialog) 
+        {
+            Name = name;
+            Dialog = dialog;
+            LongDialog = longDialog;
         }
 
         public void PrintDialog(string Name)
