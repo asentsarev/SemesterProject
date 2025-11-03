@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace WorldOfZuul
 {
-    public class CommandWords
-    {
-        public List<string> ValidCommands { get; } = new List<string> { "north", "east", "south", "west", "look", "back", "take", "quit","up","down","right","left","take","inside","outside"};
-
-        public bool IsValidCommand(string command)
+        public class CommandWords
         {
-            return ValidCommands.Contains(command);
+            public List<string> ValidCommands { get; } = new List<string> { "north", "east", "south", "west", "look", "back", "take", "quit","up","down","right","left","take","inside","outside"};
+
+            public bool IsValidCommand(string command)
+            {
+                return ValidCommands.Contains(command);
+            }
         }
-    }
 
 }

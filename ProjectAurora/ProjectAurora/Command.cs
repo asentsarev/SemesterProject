@@ -11,6 +11,11 @@ namespace ProjectAurora
         public string Name { get; }
         public string? SecondWord { get; } // this might be used for future expansions, such as "take apple".
 
+        public bool HasSecondWord()
+        {
+            return SecondWord != null;
+        }
+
         public Command(string name, string? secondWord = null)
         {
             Name = name;

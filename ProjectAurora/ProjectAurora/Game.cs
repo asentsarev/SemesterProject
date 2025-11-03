@@ -4,12 +4,11 @@ namespace ProjectAurora
     {
         private static Room? currentRoom;
         private static Room? previousRoom;
-        private static List<Room>? rooms;
 
         public Game()
         {
             CreateRooms();
-            CreateNPCs(rooms);
+            CreateNPCs();
         }
 
         public void CreateRooms()
@@ -18,10 +17,8 @@ namespace ProjectAurora
             Room? start = new Room("Aurora Control Hub", "You stand inside the Aurora Control Hub, the heart of the last renewable energy initiative." +
                 "\r\nThe air hums with faint backup power. Screens flicker, showing maps of four darkened regions." +
                 "\r\nA workbench lies in the corner with scattered tools.\r\n");
-            rooms.Add(start);
             Room? solarDesert = new Room("Solar Desert", "The desert stretches before you. Towers of sand cover the solar field. Heat shimmers across the horizon." +
-                "\r\nThere you meet Dr. Liora Sunvale");
-            rooms.Add(solarDesert);
+                "\r\nThere you meet Dr. Liora Sunvale\r\n");
             currentRoom = start;
 
 
@@ -51,7 +48,7 @@ namespace ProjectAurora
             Item lever = new("lever", "A heavy, stainless steel lever. It looks like it could replace a rusted, jammed control.");
             bonus.AddItem(lever);
 
-            controlroom = new("Control room", "You walk deep inside the dam to the Control room. Directly ahead is the emergency restart control panel with the restart lever marked, however the levers are completely rusted and jammed shut. The only way to go is leaving and going back out to the DampPlant(outside).");
+            Room? controlRoom = new("Control room", "You walk deep inside the dam to the Control room. Directly ahead is the emergency restart control panel with the restart lever marked, however the levers are completely rusted and jammed shut. The only way to go is leaving and going back out to the DampPlant(outside).");
 
 
             // hydro area directions
@@ -60,8 +57,8 @@ namespace ProjectAurora
             hub.SetExit("north", researchcenter);
             hub.SetExit("west", resourcearea);
             damplant.SetExit("west", hub);
-            damplant.SetExit("inside", controlroom);
-            controlroom.SetExit("outside", damplant);
+            damplant.SetExit("inside", controlRoom);
+            controlRoom.SetExit("outside", damplant);
             researchcenter.SetExit("south", hub);
             researchcenter.SetExit("up", library);
             researchcenter.SetExit("right", cafeteria);
@@ -78,9 +75,9 @@ namespace ProjectAurora
 
         }
 
-        private void CreateNPCs(List<Room> rooms)
+        private void CreateNPCs()
         {
-            NPC Liora = new NPC("Dr. Liora Sunvale", "", rooms.Find(x => x.ShortDescription == "Solar Desert"));
+
         }
 
         public void Play()
