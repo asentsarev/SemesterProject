@@ -44,7 +44,8 @@ namespace ProjectAurora
             Item pinecone = new("pinecone", "A large, sticky pinecone. It feels heavy, perhaps useful for starting a fire.\r\n");
             hydroResourcearea.AddItem(pinecone);
 
-            Room? library = new("Library", "Loads of heavy shelves hold thousands of technical theory, documents and old logbooks. \r\nA single chair is occupied by a person reading one of the books. \r\n" +
+            Room? library = new("Library", "Loads of heavy shelves hold thousands of technical theory, documents and old logbooks. \r\n" +
+                "A single chair is occupied by a person reading one of the books. \r\n" +
                 "The lobby is downstrairs(down)\r\n");
 
             Room? cafeteria = new("Caferetia", "A regular cafeteria. Near the serving station, you see a small, misplaced item lying among the cutlery. It looks like a key, dou you take it?(take key) It might come in handy later... \r\n" +
