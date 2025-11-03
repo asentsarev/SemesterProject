@@ -8,7 +8,7 @@ namespace ProjectAurora
 {
     public class CommandWords
     {
-        public List<string> ValidCommands { get; } = new List<string> { "north", "east", "south", "west", "look", "back", "quit" };
+        public List<string> ValidCommands { get; } = new List<string> { "north", "east", "south", "west", "look", "back", "take", "quit","up","down","right","left","take","inside","outside"};
 
         public bool IsValidCommand(string command)
         {
