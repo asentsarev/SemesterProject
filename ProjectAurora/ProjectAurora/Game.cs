@@ -28,7 +28,7 @@ namespace ProjectAurora
             // hydro rooms and their items
             Room? hub = new("Hydro Hub", "You started walking towards the river. But you reach an area where the road separates into 4. Luckily there is a sign that reads =Welcome, you are at the Hydro Hub= /n = Outside(south), Research Center(north), Hydroelectric dam(east), Tundra forrest(west)=");
 
-            rooms? damplant = new("The Dam Plant", "After a short stroll you arrive at the riverside with no bridge leading acoross. However there is a an obstruction that connects the two sides: A huge Hydroelectric Plant. And you see an enterance, that you can enter(inside) however there is a lock on the door");
+            Room? damplant = new("The Dam Plant", "After a short stroll you arrive at the riverside with no bridge leading acoross. However there is a an obstruction that connects the two sides: A huge Hydroelectric Plant. And you see an enterance, that you can enter(inside) however there is a lock on the door");
             
             Room? researchcenter = new("Research Center", "You enter inside the lobby of an Aurora outpost, this building gives help and guidiance to engineers on their missions, it has 4 sections: a Library(up), the Cafeteria(right), the Lab(left) and an ominous Basement(down). The way back to the Hydro Hub is South");
             
