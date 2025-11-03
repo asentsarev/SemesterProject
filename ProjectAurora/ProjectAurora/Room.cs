@@ -16,6 +16,16 @@
             LongDescription = longDesc;
         }
 
+        public void PrintDialog()
+        {
+            Console.WriteLine(Npc.Dialog);
+        }
+
+        public void AddNPC(string name, string dialog)
+        {
+            Npc = new NPC(name, dialog);
+        }
+
         // Method to put an item into the room
         public void AddItem(Item item)
         {

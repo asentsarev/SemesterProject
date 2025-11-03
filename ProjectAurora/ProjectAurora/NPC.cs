@@ -19,16 +19,11 @@ namespace ProjectAurora
             Dialog = dialog;
         }
 
-        public NPC(string name, string dialog, string longDialog) 
+        public NPC(string name, string dialog, string longDialog)
         {
             Name = name;
             Dialog = dialog;
             LongDialog = longDialog;
-        }
-
-        public void PrintDialog(string Name)
-        {
-            Console.WriteLine(Dialog);
         }
     }
 }

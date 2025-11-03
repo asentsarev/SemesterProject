@@ -5,6 +5,8 @@ namespace ProjectAurora
         private static Room? currentRoom;
         private static Room? previousRoom;
         private bool hasDamKey = false;
+        private bool talkedToLiora = false;
+        private bool hasDesertKey = false;
 
         private Room? damplant;
         private Room? controlroom;
@@ -20,9 +22,35 @@ namespace ProjectAurora
             Room? start = new Room("Aurora Control Hub", "You stand inside the Aurora Control Hub, the heart of the last renewable energy initiative." +
                 "\r\nThe air hums with faint backup power. Screens flicker, showing maps of four darkened regions." +
                 "\r\nA workbench lies in the corner with scattered tools.\r\n");
-            Room? solarDesert = new Room("Solar Desert", "The desert stretches before you. Towers of sand cover the solar field. Heat shimmers across the horizon." +
-                "\r\nThere you meet Dr. Liora Sunvale\r\n");
             currentRoom = start;
+
+            // solar rooms and their items
+            Room? solarDesert = new Room("Solar Desert", "After walking for an hour you find yourself in a desolate land.\r\n" +
+                "The desert stretches before you. Towers of sand cover the solar field. Heat shimmers across the horizon.\r\n");
+            Room? desertHub = new Room("Desert Hub", "You find a small hub that looks like it could have life.\r\n" +
+                "You notice a map in front of the hub with the areas in the desert:\r\n" +
+                "Maintenence tent(west), Aurora Hub(east), Solar panel field(north), Junkyard(south)\r\n" +
+                "You decide to go inside and there you find Dr. Liora Sunvale\r\n" +
+                "She welcomes you inside and is ready to answer your questions. (talk)\r\n");
+
+            Room? maintenenceTentOutside = new Room("Maintence tent outside","Before going in, the scientist guarding the tent ask you a question: \r\n" +
+                "'What happens if solar panels overheat?'\r\n" +
+                "Your options are: (1) More energy, (2) Less efficiency, (3) Catch fire\r\n" +
+                "> ");
+
+            desertHub.AddNPC("Dr. Liora Sunvale", "Welcome young scientist!\r\n" +
+                "Our mission is to save the 'Solar panel field' and find all burried solar panels!\r\n" +
+                "We have thought of 2 methods of doing it and you're more than welcome to chose which one you preffer.\r\n" +
+                "1 of them is a temporary fix, so choose wisely!\r\n" +
+                "Visit the maintenece tent to get more information.(west)\r\n");
+
+
+
+            //add rooms if talked
+            if (currentRoom == desertHub && talkedToLiora)
+            {
+
+            }
 
 
             // hydro rooms and their items
@@ -149,12 +177,19 @@ namespace ProjectAurora
                     case "down":
                     case "left":
                     case "outside":
-
                         Move(command.Name);
                         break;
 
                     case "inside":
                         TryMoveInside();
+                        break;
+
+                    case "talk":
+                        currentRoom?.PrintDialog();
+                        if (currentRoom?.ShortDescription == "Desert Hub")
+                        {
+                            talkedToLiora = true;
+                        }
                         break;
 
                     case "quit":
@@ -184,6 +219,31 @@ namespace ProjectAurora
                 previousRoom = currentRoom;
                 currentRoom = currentRoom?.Exits[direction];
                 Console.WriteLine(currentRoom?.LongDescription);
+
+                if (currentRoom?.ShortDescription == "Maintenece tent outside")
+                {
+                    string? input = Console.ReadLine();
+
+                    if (string.IsNullOrEmpty(input))
+                    {
+                        Console.WriteLine("Please enter an answer.");
+                        return;
+                    }
+
+                    switch (input)
+                    {
+                        case "1":
+                        case "3":
+                            Console.WriteLine("Wrong answer! Try again.");
+                            break;
+
+                        case "2":
+                            Console.WriteLine("Good job! You got it right.");
+                            break;
+                        default:
+                            break;
+                    }
+                }
             }
             else
             {
