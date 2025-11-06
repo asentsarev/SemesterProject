@@ -7,6 +7,7 @@ namespace ProjectAurora
         private bool hasDamKey = false;
         private bool talkedToLiora = false;
         private bool hasDesertKey = false;
+        private static Room? maintenenceTent;
 
         private Room? damplant;
         private Room? controlroom;
@@ -35,8 +36,12 @@ namespace ProjectAurora
 
             Room? maintenenceTentOutside = new Room("Maintence tent outside","Before going in, the scientist guarding the tent ask you a question: \r\n" +
                 "'What happens if solar panels overheat?'\r\n" +
-                "Your options are: (1) More energy, (2) Less efficiency, (3) Catch fire\r\n" +
-                "> ");
+                "Your options are: (1) More energy, (2) Less efficiency, (3) Catch fire\r\n");
+            Console.Write("> ");
+
+            maintenenceTent = new Room("Maintenence tent", "You go inside the tent and there greets you a wooden box with the text\r\n" +
+                "Resource area\r\n" +
+                "You chose to open to the box and inside it is a key. You will need it for your progress in the Solar Desert, so you take the key.\r\n");
 
             desertHub.AddNPC("Dr. Liora Sunvale", "Welcome young scientist!\r\n" +
                 "Our mission is to save the 'Solar panel field' and find all burried solar panels!\r\n" +
@@ -44,6 +49,11 @@ namespace ProjectAurora
                 "1 of them is a temporary fix, so choose wisely!\r\n" +
                 "Visit the maintenece tent to get more information.(west)\r\n");
 
+            Room? solarPanelFields = new Room("Solar Panel Fields","You find yourself in the Solar Panel Fields and notice a lot of piles of sand.\r\n" +
+                "You try to dig into one and you find a solar panel. There are thousands of them.\r\n" +
+                "How will you clean up the piles:\r\n" +
+                "(1) Water Hose (unreliable) (2) Robotic maintenece\r\n");
+            Console.Write("> ");
 
 
             //add rooms if talked
@@ -267,6 +277,8 @@ namespace ProjectAurora
 
                         case "2":
                             Console.WriteLine("Good job! You got it right.");
+                            currentRoom = maintenenceTent;
+                            hasDesertKey = true;
                             break;
                         default:
                             break;
