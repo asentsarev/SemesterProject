@@ -84,7 +84,7 @@ namespace ProjectAurora
                 "(1) Water Hose (unreliable) (2) Robotic maintenece\r\n");
             Console.Write("> ");
 
-            junkyard = new Room("Junkyard","You use the key to go inside the resource area and there you find 3 exits labeled:" +
+            junkyard = new Room("Junkyard","You use the key to go inside the junkyard and there you find 3 exits labeled:" +
                 "Water supplies(west) Scraps 1(south) Scraps 2(east)\r\n");
 
             scraps1 = new Room("Scrapyard 1", "After going inside you see a huge pile of scraps.\r\n" +

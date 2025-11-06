@@ -7,12 +7,12 @@
       "RelativeMoniker": "D:0:0:{5511093B-CDA5-4207-80F0-63A6B753B850}|ProjectAurora\\ProjectAurora.csproj|solutionrelative:projectaurora\\game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5511093B-CDA5-4207-80F0-63A6B753B850}|ProjectAurora\\ProjectAurora.csproj|c:\\users\\user\\documents\\github\\semesterproject\\projectaurora\\projectaurora\\room.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5511093B-CDA5-4207-80F0-63A6B753B850}|ProjectAurora\\ProjectAurora.csproj|solutionrelative:projectaurora\\room.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{5511093B-CDA5-4207-80F0-63A6B753B850}|ProjectAurora\\ProjectAurora.csproj|c:\\users\\user\\documents\\github\\semesterproject\\projectaurora\\projectaurora\\npc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5511093B-CDA5-4207-80F0-63A6B753B850}|ProjectAurora\\ProjectAurora.csproj|solutionrelative:projectaurora\\npc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5511093B-CDA5-4207-80F0-63A6B753B850}|ProjectAurora\\ProjectAurora.csproj|c:\\users\\user\\documents\\github\\semesterproject\\projectaurora\\projectaurora\\room.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5511093B-CDA5-4207-80F0-63A6B753B850}|ProjectAurora\\ProjectAurora.csproj|solutionrelative:projectaurora\\room.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{5511093B-CDA5-4207-80F0-63A6B753B850}|ProjectAurora\\ProjectAurora.csproj|c:\\users\\user\\documents\\github\\semesterproject\\projectaurora\\projectaurora\\command.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -38,7 +38,7 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "NPC.cs",
               "DocumentMoniker": "C:\\Users\\User\\Documents\\GitHub\\SemesterProject\\ProjectAurora\\ProjectAurora\\NPC.cs",
               "RelativeDocumentMoniker": "ProjectAurora\\NPC.cs",
@@ -46,11 +46,12 @@
               "RelativeToolTip": "ProjectAurora\\NPC.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-06T10:40:57.916Z"
+              "WhenOpened": "2025-11-06T10:40:57.916Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Room.cs",
               "DocumentMoniker": "C:\\Users\\User\\Documents\\GitHub\\SemesterProject\\ProjectAurora\\ProjectAurora\\Room.cs",
               "RelativeDocumentMoniker": "ProjectAurora\\Room.cs",
@@ -80,7 +81,7 @@
               "RelativeDocumentMoniker": "ProjectAurora\\Game.cs",
               "ToolTip": "C:\\Users\\User\\Documents\\GitHub\\SemesterProject\\ProjectAurora\\ProjectAurora\\Game.cs",
               "RelativeToolTip": "ProjectAurora\\Game.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAKsCAABTAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-03T12:55:16.244Z",
               "EditorCaption": ""
