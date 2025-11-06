@@ -122,7 +122,7 @@ namespace ProjectAurora
                 "You see some items you that you can move, a few pinecones on the ground(take pinecone) and some berries on a nearby bush(take berries), you can try to wander around but it might get you lost\r\n");
             Item berries = new("berries", "A cluster of edible-looking berries. Maybe they could be useful.\r\n");
             hydroResourcearea.AddItem(berries);
-            Item pinecone = new("pinecone", "A large, sticky pinecone.\r\n");
+            Item pinecone = new("pinecone", "A large,  pinecone.\r\n");
             hydroResourcearea.AddItem(pinecone);
 
             Room? library = new("Library", "Loads of heavy shelves hold thousands of technical theory, documents and old logbooks.\r\n" +
@@ -138,7 +138,7 @@ namespace ProjectAurora
                             "This is all the information you should need to save the Dam");
 
 
-            Room? cafeteria = new("Caferetia", "A regular cafeteria. Near the serving station, you see a small, out of place item lying among the cutlery. It looks like a key, dou you take it?(take key) It might come in handy later... \r\n" +
+            Room? cafeteria = new("Cafeteria", "A regular cafeteria. Near the serving station, you see a small, out of place item lying among the cutlery. It looks like a key, dou you take it?(take key) It might come in handy later... \r\n" +
                 "The lobby is to the Left(left).\r\n");
 
             Item damKey = new("key", "A small metal tool with the Aurora symbol on it. It doesn't quite fit the shape of the rest of the spoons and forks, maybe you should investigate? (take key) \r\n");
@@ -460,7 +460,7 @@ namespace ProjectAurora
             else if (itemNameLower == "pinecone")
             {
                 hasPinecone = true;
-                Console.WriteLine($"You pick up the{itemToTake.Name}.");
+                Console.WriteLine($"You pick up the {itemToTake.Name}.");
                 currentRoom?.RemoveItem(itemToTake.Name);
             }
             else
@@ -510,7 +510,7 @@ namespace ProjectAurora
 
             string itemName = command.SecondWord.ToLower();
 
-            if (itemName == "lever" && hasNewLever && currentRoom == controlroom)
+            if (itemName == "lever" && hasNewLever && currentRoom?.ShortDescription == "Control room")
             {
                 if (!leverRepaired)
                 {
@@ -526,11 +526,25 @@ namespace ProjectAurora
                 }
             }
 
-            if ((itemName == "berries" || itemName == "pinecone") && currentRoom == controlroom)
+
+            if (currentRoom != null && currentRoom.ShortDescription == "Control room" &&(itemName == "berries" || itemName == "pinecone"))
             {
-                QTE_Start();
-                return;
+    
+            if (hasBerries && hasPinecone)
+            {
+            Console.WriteLine($"You use the {itemName} to begin combining the berry juice and pinecone dust...");
+            QTE_Start();
+            return;
             }
+            else
+            {
+            Console.WriteLine("You need both the berry juice and the pinecone dust to create the derusting acid.");
+            if (!hasBerries) Console.WriteLine("Missing: Berries (Find them in the Tundra forrest)");
+            if (!hasPinecone) Console.WriteLine("Missing: Pinecone (Find it in the Tundra forrest)");
+            return;
+            }
+            }
+
 
             Console.WriteLine($"You cannot currently use the {itemName} here or you don't possess it.");
         }
@@ -672,6 +686,8 @@ namespace ProjectAurora
 
             Console.WriteLine("Your mission: travel to four regions and repair their energy plants. " +
                 "\r\nYour choices will shape the future of humanity.\r\n");
+
+            Console.WriteLine("You can journey in 1 of 4 directions, you can pick the River Valley(north) Solar Desert(west) Geothermal, Volcanic Plains(east), or the Windy Highlands(south)"   );
 
             PrintHelp();
             Console.WriteLine();
