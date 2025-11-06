@@ -687,7 +687,8 @@ namespace ProjectAurora
             Console.WriteLine("Your mission: travel to four regions and repair their energy plants. " +
                 "\r\nYour choices will shape the future of humanity.\r\n");
 
-            Console.WriteLine("You can journey in 1 of 4 directions, you can pick the River Valley(north) Solar Desert(west) Geothermal, Volcanic Plains(east), or the Windy Highlands(south)"   );
+            Console.WriteLine("You can journey in 1 of 4 directions, you can pick the River Valley(north) Solar Desert(west), \r\n" +
+                "Volcanic Plains(east), or the Windy Highlands(south)");
 
             PrintHelp();
             Console.WriteLine();
