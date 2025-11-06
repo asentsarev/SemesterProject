@@ -20,6 +20,10 @@
         {
             Console.WriteLine(Npc.Dialog);
         }
+        public void PrintNPCName()
+        {
+            Console.WriteLine(Npc.Name);
+        }
 
         public void AddNPC(string name, string dialog)
         {

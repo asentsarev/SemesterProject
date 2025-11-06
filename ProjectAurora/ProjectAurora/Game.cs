@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.Threading; 
 //^^ these are for the hydro minigame
 
@@ -8,6 +9,7 @@ namespace ProjectAurora
     {
         private static Room? currentRoom;
         private static Room? previousRoom;
+        private static Room? start;
 
         private bool hasDamKey = false;
         private bool hasNewLever = false;
@@ -18,6 +20,11 @@ namespace ProjectAurora
         private int successfulPresses = 0;
         private const int QuickTimeEvents = 5;
         private bool qteComplete = false;
+        private bool hasRoboticParts1 = false;
+        private bool hasRoboticParts2 = false;
+        private bool hasWaterHose = false;
+
+
 
 
         private bool talkedToLiora = false;
@@ -35,16 +42,16 @@ namespace ProjectAurora
         public void CreateRooms()
         {
 
-            Room? start = new Room("Aurora Control Hub", "You stand inside the Aurora Control Hub, the heart of the last renewable energy initiative." +
+            start = new Room("Aurora Control Hub", "You stand inside the Aurora Control Hub, the heart of the last renewable energy initiative." +
                 "\r\nThe air hums with faint backup power. Screens flicker, showing maps of four darkened regions." +
                 "\r\nA workbench lies in the corner with scattered tools.\r\n");
             currentRoom = start;
 
             // solar rooms and their items
-            Room? solarDesert = new Room("Solar Desert", "After walking for an hour you find yourself in a desolate land.\r\n" +
-                "The desert stretches before you. Towers of sand cover the solar field. Heat shimmers across the horizon.\r\n");
-            Room? desertHub = new Room("Desert Hub", "You find a small hub that looks like it could have life.\r\n" +
-                "You notice a map in front of the hub with the areas in the desert:\r\n" +
+            Room? solarDesert = new Room("Solar Desert", "After walking for hours you find yourself in a desolate land.\r\n" +
+                "The desert stretches before you. Towers of sand cover the solar field. Heat shimmers across the horizon.\r\n" +
+                "You find a small hub that looks like it could have life(west)");
+            Room? desertHub = new Room("Desert Hub", "You notice a map in front of the hub with the areas in the desert:\r\n" +
                 "Maintenence tent(west), Aurora Hub(east), Solar panel field(north), Junkyard(south)\r\n" +
                 "You decide to go inside and there you find Dr. Liora Sunvale\r\n" +
                 "She welcomes you inside and is ready to answer your questions. (talk)\r\n");
@@ -55,7 +62,7 @@ namespace ProjectAurora
             Console.Write("> ");
 
             maintenenceTent = new Room("Maintenence tent", "You go inside the tent and there greets you a wooden box with the text\r\n" +
-                "Resource area\r\n" +
+                "Junkyard\r\n" +
                 "You chose to open to the box and inside it is a key. You will need it for your progress in the Solar Desert, so you take the key.\r\n");
 
             desertHub.AddNPC("Dr. Liora Sunvale", "Welcome young scientist!\r\n" +
@@ -70,11 +77,39 @@ namespace ProjectAurora
                 "(1) Water Hose (unreliable) (2) Robotic maintenece\r\n");
             Console.Write("> ");
 
+            Room? junkyard = new Room("Junkyard","You use the key to go inside the resource area and there you find 3 exits labeled:" +
+                "Water supplies(west) Scraps 1(south) Scraps 2(east)\r\n");
 
+            Room? scraps1 = new Room("Scrapyard 1", "After going inside you see a huge pile of scraps.\r\n" +
+                "You start searching for materials and inside you find robotic parts and you take them.\r\n" +
+                "(+Robotic parts)");
+
+            Room? scraps2 = new Room("Scrapyard 2", "After going inside you see a huge pile of scraps.\r\n" +
+                "You start searching for materials and inside you find robotic parts and you take them.\r\n" +
+                "(+Robotic parts)");
+
+            Room? waterSupplies = new Room("Water Supplies", "After going inside you see a huge pile of water supplies.\r\n" +
+                "You start searching for materials and inside you long water hose with a portable water tank and you take them.\r\n" +
+                "(+Water Hose)");
+
+
+            solarDesert.SetExit("west", desertHub);
+            desertHub.SetExit("east", start);
             //add rooms if talked
             if (currentRoom == desertHub && talkedToLiora)
             {
-
+                desertHub.SetExit("west", maintenenceTentOutside);
+                desertHub.SetExit("north", solarPanelFields);
+                maintenenceTent.SetExit("east", desertHub);
+                junkyard.SetExit("west", waterSupplies);
+                junkyard.SetExit("south", scraps1);
+                junkyard.SetExit("east", scraps2);
+                junkyard.SetExit("north",desertHub);
+                solarPanelFields.SetExit("south", desertHub);
+                if (hasDesertKey)
+                {
+                    desertHub.SetExit("south", junkyard);
+                }
             }
 
 
@@ -144,6 +179,7 @@ namespace ProjectAurora
             hydroResourcearea.SetExit("north", bonus);
             bonus.SetExit("south", hydroResourcearea);
             start.SetExit("north", hydroHub);
+            start.SetExit("west", solarDesert);
 
 
             //windy highlands
@@ -248,6 +284,7 @@ namespace ProjectAurora
                         break;
 
                     case "talk":
+                        currentRoom?.PrintNPCName();
                         currentRoom?.PrintDialog();
                         if (currentRoom?.ShortDescription == "Desert Hub")
                         {
@@ -283,6 +320,7 @@ namespace ProjectAurora
                 currentRoom = currentRoom?.Exits[direction];
                 Console.WriteLine(currentRoom?.LongDescription);
 
+
                 if (currentRoom?.ShortDescription == "Maintenece tent outside")
                 {
                     string? input = Console.ReadLine();
@@ -307,6 +345,55 @@ namespace ProjectAurora
                             break;
                         default:
                             break;
+                    }
+                }
+
+                if (currentRoom?.ShortDescription == "Scrapyard 1") 
+                {
+                    hasRoboticParts1 = true;
+                }
+                if (currentRoom?.ShortDescription == "Scrapyard 2")
+                {
+                    hasRoboticParts2 = true;
+                }
+                if (currentRoom?.ShortDescription == "Water Supplies")
+                {
+                    hasWaterHose = true;
+                }
+
+                if (currentRoom?.ShortDescription == "Solar Panel Fields")
+                {
+                    string? input = Console.ReadLine();
+                    if (string.IsNullOrEmpty(input))
+                    {
+                        Console.WriteLine("Please select an item.");
+                        return;
+                    }
+                    switch (input)
+                    {
+                        case "1":
+                            if(hasWaterHose)
+                            {
+                                Console.WriteLine("You manage to clean the solar panels and get them working again, but the fix is only temporary.");
+                                currentRoom = start;
+                                previousRoom = null;
+                                return;
+                            }
+                            else
+                            {
+                                Console.WriteLine("You do not have that item!");
+                                return;
+                            }
+                        case "2":
+                            if(hasRoboticParts1 && hasRoboticParts2)
+                            {
+                                Console.WriteLine("You manage to use the robotic parts you've found to make a robot that will maintain the functionality of the panels!\r\n" +
+                                    "You have saved the Solar Desert!");
+                                currentRoom = start;
+                                previousRoom = null;
+                            }
+                            break;
+
                     }
                 }
             }
