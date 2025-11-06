@@ -1,10 +1,25 @@
+using System;
+using System.Threading; 
+//^^ these are for the hydro minigame
+
 namespace ProjectAurora
 {
     public class Game
     {
         private static Room? currentRoom;
         private static Room? previousRoom;
+
         private bool hasDamKey = false;
+        private bool hasNewLever = false;
+        private bool leverRepaired = false;
+        private bool leverDerusted = false;
+        private bool hasBerries = false;
+        private bool hasPinecone = false;
+        private int successfulPresses = 0;
+        private const int QuickTimeEvents = 5;
+        private bool qteComplete = false;
+
+
         private bool talkedToLiora = false;
         private bool hasDesertKey = false;
 
@@ -33,7 +48,7 @@ namespace ProjectAurora
                 "You decide to go inside and there you find Dr. Liora Sunvale\r\n" +
                 "She welcomes you inside and is ready to answer your questions. (talk)\r\n");
 
-            Room? maintenenceTentOutside = new Room("Maintence tent outside","Before going in, the scientist guarding the tent ask you a question: \r\n" +
+            Room? maintenenceTentOutside = new Room("Maintence tent outside", "Before going in, the scientist guarding the tent ask you a question: \r\n" +
                 "'What happens if solar panels overheat?'\r\n" +
                 "Your options are: (1) More energy, (2) Less efficiency, (3) Catch fire\r\n" +
                 "> ");
@@ -56,42 +71,50 @@ namespace ProjectAurora
             // hydro rooms and their items
             Room? hydroHub = new("Hydro Hub", "You started walking towards the river. But you reach an area where the road separates into 4. " +
                 "\r\nLuckily there is a sign that reads:\r\n" +
-                "=Welcome, you are at the Hydro Hub=\r\n" +
-                "=Outside(south), Research Center(north), Hydroelectric dam(east), Tundra forrest(west)=\r\n");
+                "==Welcome, you are at the Hydro Hub==\r\n" +
+                "==Outside(south), Research Center(north), Hydroelectric Dam(east), Tundra forrest(west)==\r\n");
 
-            Room? damplant = new("The Dam Plant", "After a short stroll you arrive at the riverside with no bridge leading acoross. \r\n" +
+            damplant = new("The Dam Plant", "After a short stroll you arrive at the riverside with no bridge leading acoross. \r\n" +
                 "However there is a an obstruction that connects the two sides: A huge Hydroelectric Plant. And you see an enterance, that you can enter(inside) \r\n" +
-                "however there is a lock on the door\r\n");
+                "but there is a lock on the door\r\n");
 
-            Room? researchcenter = new("Research Center", "You enter inside the lobby of an Aurora outpost, this building gives help and guidiance to engineers on their missions, \r\n" +
-                "it has 4 sections: a Library(up), the Cafeteria(right), the Lab(left) and an ominous Basement(down). The way back to the Hydro Hub is South\r\n");
+            Room? researchcenter = new("Research Center", "You enter inside the lobby of an Aurora outpost, this building gives help" +
+                "and guidiance to engineers on their missions, \r\n" +
+                "it has 2 main sections: a Library(up) and the Cafeteria(right). The way back to the Hydro Hub is (South)\r\n");
 
-            Room? hydroResourcearea = new("Tundra Forrest", "You have entered the Tundra forrest.\r\n");
-            Item berries = new("berries", "A cluster of edible-looking berries. Maybe they could be used as bait or food.\r\n");
+            Room? hydroResourcearea = new("Tundra Forrest", "You have entered the Tundra forrest. There are giant trees as far as you can see.\r\n" +
+                "You see some items you that you can move, a few pinecones on the ground(take pinecone) and some berries on a nearby bush(take berries), you can try to wander around but it might get you lost\r\n");
+            Item berries = new("berries", "A cluster of edible-looking berries. Maybe they could be useful.\r\n");
             hydroResourcearea.AddItem(berries);
-            Item pinecone = new("pinecone", "A large, sticky pinecone. It feels heavy, perhaps useful for starting a fire.\r\n");
+            Item pinecone = new("pinecone", "A large, sticky pinecone.\r\n");
             hydroResourcearea.AddItem(pinecone);
 
-            Room? library = new("Library", "Loads of heavy shelves hold thousands of technical theory, documents and old logbooks. \r\n" +
-                "A single chair is occupied by a person reading one of the books. \r\n" +
+            Room? library = new("Library", "Loads of heavy shelves hold thousands of technical theory, documents and old logbooks.\r\n" +
+                "A single chair is occupied by a person reading one of the books, you can approach ther (talk). \r\n" +
                 "The lobby is downstrairs(down)\r\n");
+            library.AddNPC("Dr. Amara Riversong", "Oh, hello. Looking for information on the Dam? It's truly bad luck, due to climate change the weather became even more\r\n" +
+                            "extreme up here North as a result the dam's pipes have frozen and the lever that could reboot the pipes\r\n" +
+                            "has became rusty and stuck shut. To add to the troubles, apparently the dam's key was misplaced by\r\n" +
+                            "a previous Aurora member, now we can't enter the Control Room even if we had the acid to derust the lever\r\n" +
+                            "but I have some good news aswell, I have worked out an acid that could derusting the lever \r\n" +
+                            "and restart the energy production of the dam, it requires berry juice and pinecone dust\r\n" +
+                            "You should find both around the Tundra forrest \r\n" +
+                            "This is all the information you should need to save the Dam");
 
-            Room? cafeteria = new("Caferetia", "A regular cafeteria. Near the serving station, you see a small, misplaced item lying among the cutlery. It looks like a key, dou you take it?(take key) It might come in handy later... \r\n" +
-                "The lobby is to the Left(left).\r\n"); 
-            
-            Item damKey = new("key", "A small metal tool with the Aurora symbol on it. It doesn't quite fit the shape of the rest of the spoons and forks, perhaps you should investigate? (take) \r\n");
+
+            Room? cafeteria = new("Caferetia", "A regular cafeteria. Near the serving station, you see a small, out of place item lying among the cutlery. It looks like a key, dou you take it?(take key) It might come in handy later... \r\n" +
+                "The lobby is to the Left(left).\r\n");
+
+            Item damKey = new("key", "A small metal tool with the Aurora symbol on it. It doesn't quite fit the shape of the rest of the spoons and forks, maybe you should investigate? (take key) \r\n");
             cafeteria.AddItem(damKey);
 
-            Room? hydrolab = new("Hydro Lab", "A workspace cluttered with beakers and other equipment. A researcher in a clean white coat is hard at work. The lobby is to the Right(right).\r\n");
-
-            Room? basement = new("Basement", "A dark, seemingly abandoned utility area. The air is cold and heavy. You see a series of locked storage crates. The lobby is Up(up).\r\n");
-
-            Room? bonus = new("Top of the Hill", "After climbing up the hill you find a forgotten toolbox. You see a box labeled levers. The only way down is back to the Tundra (south).\r\n");
+            Room? bonus = new("Top of the Hill", "After climbing up the hill you find a forgotten toolbox. You see a box labeled levers, take one?(take lever).\r\n" +
+            "The only way down is back to the Tundra (south).\r\n");
             Item lever = new("lever", "A heavy, stainless steel lever. It looks like it could replace a rusted, jammed control.\r\n");
             bonus.AddItem(lever);
 
             controlroom = new("Control room", "You walk deep inside the dam to the Control room. Directly ahead is the emergency restart control panel with the restart lever marked, \r\n" +
-                "however the levers are completely rusted and jammed shut. The only way to go is leaving and going back out to the DampPlant(outside).\r\n");
+            "however the levers are completely rusted and jammed shut. You need to derust or replace if you ever want to resteart teh plant. The only way to go is leaving and going back out to the DampPlant(outside).\r\n");
 
 
             // hydro area directions
@@ -105,18 +128,14 @@ namespace ProjectAurora
             researchcenter.SetExit("south", hydroHub);
             researchcenter.SetExit("up", library);
             researchcenter.SetExit("right", cafeteria);
-            researchcenter.SetExit("left", hydrolab);
-            researchcenter.SetExit("down", basement);
             library.SetExit("down", researchcenter);
             cafeteria.SetExit("left", researchcenter);
-            hydrolab.SetExit("right", researchcenter);
-            basement.SetExit("up", researchcenter);
             hydroResourcearea.SetExit("east", hydroHub);
             hydroResourcearea.SetExit("north", bonus);
             bonus.SetExit("south", hydroResourcearea);
             start.SetExit("north", hydroHub);
 
-            
+
             //windy highlands
             Room? outside = new("You are outside.", "You are standing outside on the peak of the windy highlands. To the south is ridge path leading to an abandoned cabin.");
             Room? cabin = new("You are inside the cabin.", "You've entered an old, abandoned cabin once used by maintenance crews. You can see old notes and spare parts scattered on the ground. To the east is a door which seems to lead to the garden.");
@@ -143,7 +162,7 @@ namespace ProjectAurora
 
             stream.SetExit("east", turbines);
 
-            currentRoom = outside;
+            //currentRoom = outside;
 
         }
 
@@ -174,7 +193,8 @@ namespace ProjectAurora
                 Command? command = parser.GetCommand(input);
 
                 if (command == null)
-                {Console.WriteLine(currentRoom?.LongDescription);
+                {
+                    Console.WriteLine(currentRoom?.LongDescription);
                     Console.WriteLine("I don't know that command.");
                     continue;
                 }
@@ -192,8 +212,13 @@ namespace ProjectAurora
                             currentRoom = previousRoom;
                         break;
 
+
                     case "take":
                         TakeItem(command);
+                        break;
+
+                    case "use":
+                        UseItem(command);
                         break;
 
                     case "north":
@@ -280,7 +305,7 @@ namespace ProjectAurora
         }
 
 
-        //take command
+        //takeitem command
         private void TakeItem(Command command)
         {
             if (!command.HasSecondWord())
@@ -302,16 +327,30 @@ namespace ProjectAurora
 
             if (itemNameLower == "key")
             {
-                hasDamKey = true; // key flag for the door dam door
+                hasDamKey = true;
                 currentRoom?.RemoveItem(itemToTake.Name);
                 Console.WriteLine($"You take the {itemToTake.Name}.");
             }
-            else if (itemNameLower == "lever" || itemNameLower == "berries" || itemNameLower == "pinecone")
+
+            else if (itemNameLower == "lever")
             {
-
-
+                hasNewLever = true;
                 currentRoom?.RemoveItem(itemToTake.Name);
-                Console.WriteLine($"You take the {itemToTake.Name}.");
+
+            }
+
+            else if (itemNameLower == "berries")
+            {
+                hasBerries = true;
+                Console.WriteLine($"You pick up the {itemToTake.Name}.");
+                currentRoom?.RemoveItem(itemToTake.Name);
+            }
+
+            else if (itemNameLower == "pinecone")
+            {
+                hasPinecone = true;
+                Console.WriteLine($"You pick up the{itemToTake.Name}.");
+                currentRoom?.RemoveItem(itemToTake.Name);
             }
             else
             {
@@ -322,27 +361,193 @@ namespace ProjectAurora
 
         }
 
+        //entering the hydro controlroom
         private void TryMoveInside()
         {
-            if (currentRoom == damplant) //Check if player is at the right location (ie Dam Plant)
+            if (currentRoom == damplant)
             {
-                if (hasDamKey) //check if player has the key
+                if (hasDamKey)
                 {
                     previousRoom = currentRoom;
-                    currentRoom = controlroom; // Move to the Control Room
+                    currentRoom = controlroom;
                     Console.WriteLine("The key clicks perfectly into a hidden lock next to the entrance.");
-                    Console.WriteLine("You turn the key and the heavy door slides open. You step inside.");
+                    Console.WriteLine("You turn the key and the heavy door slides open. You step inside.\r\n" +
+                    "Now you can see the rusty restart lever, you can use the items you collected to fix it (use item)");
                 }
                 else
                 {
-                    //if the player doesnt have the hydro key
+
                     Console.WriteLine("The entrance to the control room is sealed shut. It looks like it requires a specialized key.");
                 }
             }
-            else //if the player is not at the Dam Plant
+            else
             {
                 Console.WriteLine("You can only go 'inside' the control room from the Dam Plant.");
             }
+        }
+
+
+
+        //useitem command
+        private void UseItem(Command command)
+        {
+            if (!command.HasSecondWord())
+            {
+                Console.WriteLine("Use what?");
+                return;
+            }
+
+            string itemName = command.SecondWord.ToLower();
+
+            if (itemName == "lever" && hasNewLever && currentRoom == controlroom)
+            {
+                if (!leverRepaired)
+                {
+                    leverRepaired = true;
+                    Console.WriteLine("You successfully replace the rusted lever with the heavy, stainless steel one. It moves smoothly now.");
+                    Console.WriteLine("The control panel is ready for use! You can now use the panel to reactivate the dam.");
+                    return;
+                }
+                else
+                {
+                    Console.WriteLine("The lever is already repaired and functioning.");
+                    return;
+                }
+            }
+
+            if ((itemName == "berries" || itemName == "pinecone") && currentRoom == controlroom)
+            {
+                QTE_Start();
+                return;
+            }
+
+            Console.WriteLine($"You cannot currently use the {itemName} here or you don't possess it.");
+        }
+
+        //HydroQTE start + requirements
+        private void QTE_Start()
+        {
+            if (qteComplete)
+            {
+                Console.WriteLine("The control panel is already active.");
+                return;
+            }
+
+            if (leverRepaired)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("\nThe New lever is in place! With a strong pull, the emergency sequence is initiated and **completed instantly**.");
+                Console.WriteLine("✅ QTE BYPASSED! The Hydroelectric Dam is now back!");
+                Console.ResetColor();
+                QTE_Win();
+                return;
+            }
+
+            if (hasBerries && hasPinecone)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("\n*** QTE ACTIVATED ***");
+                Console.WriteLine("You now have started to try and derust the lever, however it requires a delicate balance between pine dust and berry juice");
+                Console.WriteLine("Be ready! You must press the corresponding key within 1 second!");
+                Console.ResetColor();
+
+                successfulPresses = 0;
+                StartQTE();
+            }
+            else
+            {
+                Console.WriteLine("You need a successful lever repair, or both the berries AND the pinecone to activate the emergency sequence.");
+            }
+        }
+
+        //HydroQTE game
+        private void StartQTE()
+        {
+            ConsoleKey[] possibleKeys = { ConsoleKey.A, ConsoleKey.S, ConsoleKey.D, ConsoleKey.J, ConsoleKey.K, ConsoleKey.L };
+            Random random = new Random();
+
+            while (successfulPresses < QuickTimeEvents)
+            {
+                Console.WriteLine("\n----------------------------------");
+                Console.WriteLine($"Initiating Challenge {successfulPresses + 1}...");
+
+                Thread.Sleep(3000);
+
+                ConsoleKey requiredKey = possibleKeys[random.Next(possibleKeys.Length)];
+
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine($"\n PRESS **{requiredKey}** NOW!");
+                Console.ResetColor();
+
+                if (CheckKey(requiredKey))
+                {
+                    successfulPresses++;
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine(" Success! Moving to the next step...");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    QTE_Fail();
+                    return;
+                }
+            }
+            QTE_Win();
+        }
+
+
+        //the checking system for the hydro minigame
+        private bool CheckKey(ConsoleKey requiredKey)
+        {            
+            DateTime startTime = DateTime.Now;
+
+            int timeLimitMs = 1000;
+
+            while ((DateTime.Now - startTime).TotalMilliseconds < timeLimitMs)
+            {
+                if (Console.KeyAvailable)
+                {
+                    ConsoleKeyInfo keyPress = Console.ReadKey(intercept: true);
+
+                    if (keyPress.Key == requiredKey)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+
+                Thread.Sleep(5);
+            }
+            return false; 
+        }
+
+
+        private void QTE_Win()
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("\n SUCCESS! ");
+            Console.WriteLine("The control panel lights up fully, confirming the **Hydroelectric Dam is now back to full power!**");
+            Console.WriteLine("You have completed the Hydro challenge and restored power to the region.");
+            Console.ResetColor();
+            qteComplete = true;
+        }
+
+
+        private void QTE_Fail()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("\n FAILURE! ");
+            Console.WriteLine("You failed to input the correct sequence in time.");
+            Console.WriteLine("You must clean off and reset the acid.");
+            Console.ResetColor();
+
+            successfulPresses = 0;
+
+            Thread.Sleep(10000);
+            Console.WriteLine("\n>>> 10-Second cleanup done. You may attempt the reaction again. <<<");
         }
 
 
