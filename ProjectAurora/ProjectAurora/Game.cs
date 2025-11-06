@@ -29,7 +29,14 @@ namespace ProjectAurora
 
         private bool talkedToLiora = false;
         private bool hasDesertKey = false;
-        private static Room? maintenenceTent;
+        private static Room? MaintenanceTent;
+        private static Room? desertHub;
+        private static Room? junkyard;
+        private static Room? solarPanelFields;
+        private static Room? MaintenanceTentOutside;
+        private static Room? scraps1;
+        private static Room? scraps2;
+        private static Room? waterSupplies;
 
         private Room? damplant;
         private Room? controlroom;
@@ -51,17 +58,17 @@ namespace ProjectAurora
             Room? solarDesert = new Room("Solar Desert", "After walking for hours you find yourself in a desolate land.\r\n" +
                 "The desert stretches before you. Towers of sand cover the solar field. Heat shimmers across the horizon.\r\n" +
                 "You find a small hub that looks like it could have life(west)");
-            Room? desertHub = new Room("Desert Hub", "You notice a map in front of the hub with the areas in the desert:\r\n" +
-                "Maintenence tent(west), Aurora Hub(east), Solar panel field(north), Junkyard(south)\r\n" +
+            desertHub = new Room("Desert Hub", "You notice a map in front of the hub with the areas in the desert:\r\n" +
+                "Maintenance tent(west), Aurora Hub(east), Solar panel field(north), Junkyard(south)\r\n" +
                 "You decide to go inside and there you find Dr. Liora Sunvale\r\n" +
                 "She welcomes you inside and is ready to answer your questions. (talk)\r\n");
 
-            Room? maintenenceTentOutside = new Room("Maintence tent outside", "Before going in, the scientist guarding the tent ask you a question: \r\n" +
+            MaintenanceTentOutside = new Room("Maintenece tent outside", "Before going in, the scientist guarding the tent ask you a question: \r\n" +
                 "'What happens if solar panels overheat?'\r\n" +
                 "Your options are: (1) More energy, (2) Less efficiency, (3) Catch fire\r\n");
             Console.Write("> ");
 
-            maintenenceTent = new Room("Maintenence tent", "You go inside the tent and there greets you a wooden box with the text\r\n" +
+            MaintenanceTent = new Room("Maintenance tent", "You go inside the tent and there greets you a wooden box with the text\r\n" +
                 "Junkyard\r\n" +
                 "You chose to open to the box and inside it is a key. You will need it for your progress in the Solar Desert, so you take the key.\r\n");
 
@@ -71,46 +78,30 @@ namespace ProjectAurora
                 "1 of them is a temporary fix, so choose wisely!\r\n" +
                 "Visit the maintenece tent to get more information.(west)\r\n");
 
-            Room? solarPanelFields = new Room("Solar Panel Fields","You find yourself in the Solar Panel Fields and notice a lot of piles of sand.\r\n" +
+            solarPanelFields = new Room("Solar Panel Fields","You find yourself in the Solar Panel Fields and notice a lot of piles of sand.\r\n" +
                 "You try to dig into one and you find a solar panel. There are thousands of them.\r\n" +
                 "How will you clean up the piles:\r\n" +
                 "(1) Water Hose (unreliable) (2) Robotic maintenece\r\n");
             Console.Write("> ");
 
-            Room? junkyard = new Room("Junkyard","You use the key to go inside the resource area and there you find 3 exits labeled:" +
+            junkyard = new Room("Junkyard","You use the key to go inside the resource area and there you find 3 exits labeled:" +
                 "Water supplies(west) Scraps 1(south) Scraps 2(east)\r\n");
 
-            Room? scraps1 = new Room("Scrapyard 1", "After going inside you see a huge pile of scraps.\r\n" +
+            scraps1 = new Room("Scrapyard 1", "After going inside you see a huge pile of scraps.\r\n" +
                 "You start searching for materials and inside you find robotic parts and you take them.\r\n" +
                 "(+Robotic parts)");
 
-            Room? scraps2 = new Room("Scrapyard 2", "After going inside you see a huge pile of scraps.\r\n" +
+            scraps2 = new Room("Scrapyard 2", "After going inside you see a huge pile of scraps.\r\n" +
                 "You start searching for materials and inside you find robotic parts and you take them.\r\n" +
                 "(+Robotic parts)");
 
-            Room? waterSupplies = new Room("Water Supplies", "After going inside you see a huge pile of water supplies.\r\n" +
+            waterSupplies = new Room("Water Supplies", "After going inside you see a huge pile of water supplies.\r\n" +
                 "You start searching for materials and inside you long water hose with a portable water tank and you take them.\r\n" +
                 "(+Water Hose)");
 
 
             solarDesert.SetExit("west", desertHub);
             desertHub.SetExit("east", start);
-            //add rooms if talked
-            if (currentRoom == desertHub && talkedToLiora)
-            {
-                desertHub.SetExit("west", maintenenceTentOutside);
-                desertHub.SetExit("north", solarPanelFields);
-                maintenenceTent.SetExit("east", desertHub);
-                junkyard.SetExit("west", waterSupplies);
-                junkyard.SetExit("south", scraps1);
-                junkyard.SetExit("east", scraps2);
-                junkyard.SetExit("north",desertHub);
-                solarPanelFields.SetExit("south", desertHub);
-                if (hasDesertKey)
-                {
-                    desertHub.SetExit("south", junkyard);
-                }
-            }
 
 
             // hydro rooms and their items
@@ -313,6 +304,21 @@ namespace ProjectAurora
 
         private void Move(string direction)
         {
+            if (currentRoom == desertHub && talkedToLiora)
+            {
+                desertHub?.SetExit("west", MaintenanceTentOutside);
+                desertHub?.SetExit("north", solarPanelFields);
+                MaintenanceTent?.SetExit("east", desertHub);
+                junkyard?.SetExit("west", waterSupplies);
+                junkyard?.SetExit("south", scraps1);
+                junkyard?.SetExit("east", scraps2);
+                junkyard?.SetExit("north", desertHub);
+                solarPanelFields?.SetExit("south", desertHub);
+                if (hasDesertKey)
+                {
+                    desertHub?.SetExit("south", junkyard);
+                }
+            }
 
             if (currentRoom?.Exits.ContainsKey(direction) == true)
             {
@@ -320,6 +326,8 @@ namespace ProjectAurora
                 currentRoom = currentRoom?.Exits[direction];
                 Console.WriteLine(currentRoom?.LongDescription);
 
+
+                
 
                 if (currentRoom?.ShortDescription == "Maintenece tent outside")
                 {
@@ -336,11 +344,15 @@ namespace ProjectAurora
                         case "1":
                         case "3":
                             Console.WriteLine("Wrong answer! Try again.");
+                            previousRoom = currentRoom;
+                            currentRoom = desertHub;
                             break;
 
                         case "2":
                             Console.WriteLine("Good job! You got it right.");
-                            currentRoom = maintenenceTent;
+                            previousRoom = desertHub;
+                            currentRoom = MaintenanceTent;
+                            Console.WriteLine(currentRoom?.LongDescription);
                             hasDesertKey = true;
                             break;
                         default:
