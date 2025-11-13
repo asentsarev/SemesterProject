@@ -562,7 +562,7 @@ namespace ProjectAurora
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("\nThe New lever is in place! With a strong pull, the emergency sequence is initiated and **completed instantly**.");
-                Console.WriteLine("✅ QTE BYPASSED! The Hydroelectric Dam is now back!");
+                Console.WriteLine("The Hydroelectric Dam is now back!");
                 Console.ResetColor();
                 QTE_Win();
                 return;
