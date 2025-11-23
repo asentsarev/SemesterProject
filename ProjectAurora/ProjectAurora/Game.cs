@@ -24,6 +24,14 @@ namespace ProjectAurora
         private bool hasRoboticParts2 = false;
         private bool hasWaterHose = false;
 
+        //Windy items
+        private bool hasFlimsyCables = false;
+        private bool hasPowerCables = false;   // the GOOD ones
+        private bool hasControlBoard = false;
+        private bool hasAnemometer = false;
+        private bool fedRaccoon = false;
+        private bool hasShedKey = false;
+        private bool hasHintNote = false;
 
 
 
@@ -174,18 +182,63 @@ namespace ProjectAurora
 
 
             //windy highlands
-            Room? outside = new("You are outside.", "You are standing outside on the peak of the windy highlands. To the south is ridge path leading to an abandoned cabin.");
-            Room? cabin = new("You are inside the cabin.", "You've entered an old, abandoned cabin once used by maintenance crews. You can see old notes and spare parts scattered on the ground. To the east is a door which seems to lead to the garden.");
-            Room? garden = new("You are in the garden.", "You're standing in the garden, now overgrown with weeds and bushes. You can feel the cold wind on your face. To the north is an old, half-broken shed. To the south you can see the turbines turning faintly in the distance.");
-            Room? shed = new("You are in the shed.", "You are standing in the old shed. To the north is a desk with some papers sticking out.");
-            Room? turbines = new("You are at the turbines.", "You are standing outside, between the wind turbines. Some of them seem to be turned off, while others are spinning slowly. To the east is a control tower seemingly connected to the turbines. From the west you can hear a stream of water behind some trees.");
-            Room? tower = new("You are inside the tower.", "You've entered the control tower. You can hear a faint static sound in the background. To the north are some old computers faintly flickering. To the east is an office.");
-            Room? office = new("You are inside the office.", "You've entered what seems to be an administration office. You can see blueprints and written entries scattered across the floor. You can hear rustling from behind a bookshelf towards the south.");
-            Room? stream = new("You found a stream of water.", "You are standing next to a stream of water. To the north you can see an abandoned bonfire with a few tents nearby.");
+            Room? mtboreal = new("Mount Boreal.", "You are standing outside on the peak of Mount Boreal. \r\n"+
+            "To the south is ridge path leading to an abandoned cabin.");
+            Room? cabin = new("You are inside the cabin.", "You've entered an old, abandoned cabin once used by maintenance crews. \r\n"+
+            "You can see old papers and spare parts scattered on the ground.  To the east is a door which seems to lead to the garden.");
+            Room? garden = new("You are in the garden.", "You're standing in the garden, now overgrown with weeds and bushes. \r\n"+ 
+            "You can feel the cold wind on your face. To the north is an old, half-broken shed. To the south you can see the turbines turning faintly in the distance.");
+            Room? shed = new("You are in the shed.", "You are standing in the old shed. You can see a note on a desk nearby. (take note)");
+            Room? turbines = new("You are at the turbines.", "You are standing outside, between the wind turbines. \r\n"+
+            "Some of them seem to be turned off, while others are spinning slowly. To the east is a control tower seemingly connected to the turbines. \r\n"+
+            "From the west you can hear a stream of water behind some trees.");
+            Room? tower = new("You are inside the tower.", "You've entered the control tower. You can hear a faint static sound in the background. \r\n"+ 
+            "To the north are some old computers faintly flickering. To the east is an office.");
+            Room? office = new("You are inside the office.", "You've entered what seems to be an administration office. \r\n"+ 
+            "You can see blueprints and written entries scattered across the floor. You can hear rustling from behind a bookshelf, maybe you should see who it is (talk).");
+            Room? stream = new("You found a stream of water.", "You are standing next to a stream of water. \r\n"+ 
+            "To the north you can see an abandoned bonfire with a few tents nearby.");
+            Room? tents = new("You found some old tents.", "You can see something moving in one of the tents. Mybe you should see what it is. (talk)");
 
-            outside.SetExit("south", cabin);
+            office.AddNPC("Prof. Kael Stormwright", "'Huh? Who are you?' \r\n"+
+            "'Whatever, we don't have time for that, I'm sure you've seen the turbines outside, we need to fix them.' \r\n"+
+            "'I've been trying to do it on my own, but I am missing some key components.' \r\n"+
+            "'I need you to bring me some power cables, a control board and and anemometer. You can find these items scattered around the map.' \r\n");
 
-            cabin.SetExits(outside, garden, null, null);
+            stream.AddNPC("Raccoon", 
+            "The raccoon chitters angrily, clutching a shiny component in its paws. It won't give it up for free...");
+    
+            Item controlBoard = new("control board", 
+            "The raccoon has it. You'll need to feed it something to retrieve it.");
+
+            stream.AddItem(controlBoard);
+
+            Item snack = new("snack", "A small packaged snack. Raccoons love these.");
+
+            cabin.AddItem(snack);
+
+            Item shedNote = new("note", 
+            "It reads: 'One of the turbine parts was lost near the stream... I saw something furry running off with it.'\r\n");
+
+            Item flimsyCables = new("flimsy cables",
+            "A bundle of thin, worn cables. They *might* work, but probably won’t last.");
+
+            shed.AddItem(flimsyCables);
+            shed.AddItem(shedNote);
+
+            Item powerCables = new("power cables",
+            "A solid set of insulated power cables — perfect for repairing the turbines.");
+
+            tower.AddItem(powerCables);
+
+            Item anemometer = new("anemometer", "A wind measurement device needed for turbine calibration.");
+            turbines.AddItem(anemometer);
+
+            start.SetExit("south", mtboreal);
+
+            mtboreal.SetExit("south", cabin);
+
+            cabin.SetExits(mtboreal, garden, null, null);
 
             garden.SetExits(shed, null, turbines, cabin);
 
@@ -197,7 +250,7 @@ namespace ProjectAurora
 
             office.SetExit("west", tower);
 
-            stream.SetExit("east", turbines);
+            stream.SetExits(tents, turbines, null, null);
 
             //currentRoom = outside;
 
@@ -281,6 +334,24 @@ namespace ProjectAurora
                         {
                             talkedToLiora = true;
                         }
+
+                        // Windy
+                        if (currentRoom?.ShortDescription == "You are inside the office.")
+                        {
+                            if (!hasShedKey)
+                            {
+                                Console.WriteLine("'Here, take this key for the shed outside the cabin. You’ll need it to find some of the components. Good luck.'");
+                                hasShedKey = true;
+                            }
+                            else
+                            {
+                                Console.WriteLine("\n'You've already got the shed key. Make sure to use it wisely!'");
+                            }
+                        }
+                        if (currentRoom?.ShortDescription == "You found a stream of water.")
+                        {
+                            
+                        }
                         break;
 
                     case "quit":
@@ -324,7 +395,9 @@ namespace ProjectAurora
             {
                 previousRoom = currentRoom;
                 currentRoom = currentRoom?.Exits[direction];
-                Console.WriteLine(currentRoom?.LongDescription);
+                if (currentRoom?.ShortDescription == "You are in the shed." && !hasShedKey) {}
+                else
+                    Console.WriteLine(currentRoom?.LongDescription);
 
 
                 
@@ -408,7 +481,22 @@ namespace ProjectAurora
 
                     }
                 }
+
+                // Windy
+
+                if (currentRoom?.ShortDescription == "You are in the shed." && !hasShedKey)
+                {
+                    Console.WriteLine("The shed is locked. You need a key to enter.");
+                    currentRoom = previousRoom;
+                    return;
+                }
+
+                if (currentRoom?.ShortDescription == "You found a stream of water.")
+                {
+                    Console.WriteLine("You notice a raccoon nearby! It looks like it stole something...");
+                }
             }
+
             else
             {
                 Console.WriteLine($"You can't go {direction}!");
@@ -462,6 +550,44 @@ namespace ProjectAurora
                 hasPinecone = true;
                 Console.WriteLine($"You pick up the {itemToTake.Name}.");
                 currentRoom?.RemoveItem(itemToTake.Name);
+            }
+
+            // Windy items
+            else if (itemNameLower == "control board")
+            {
+                if (!fedRaccoon)
+                {
+                    Console.WriteLine("The raccoon screeches and snatches the control board back! You need to feed it first.");
+                    return;
+                }
+                hasControlBoard = true;
+                currentRoom?.RemoveItem(itemToTake.Name);
+                Console.WriteLine("You take the control board.");
+            }
+            else if (itemNameLower == "flimsy cables")
+            {
+                hasFlimsyCables = true;
+                currentRoom?.RemoveItem(itemToTake.Name);
+                Console.WriteLine("You pick up the flimsy cables.");
+            }
+            else if (itemNameLower == "power cables")
+            {
+                hasPowerCables = true;
+                currentRoom?.RemoveItem(itemToTake.Name);
+                Console.WriteLine("You pick up the high-quality power cables.");
+            }
+            else if (itemNameLower == "anemometer")
+            {
+                hasAnemometer = true;
+                currentRoom?.RemoveItem(itemToTake.Name);
+                Console.WriteLine("You pick up the anemometer.");
+            }
+            else if (itemNameLower == "note")
+            {
+                hasHintNote = true;
+                currentRoom?.RemoveItem(itemToTake.Name);
+                Console.WriteLine("You pick up the note.");
+                Console.WriteLine(itemToTake.Description);
             }
             else
             {
@@ -545,6 +671,37 @@ namespace ProjectAurora
             }
             }
 
+            // Windy
+            if (currentRoom?.ShortDescription == "You found a stream of water." && (itemName == "snack"))
+            {
+                if (!fedRaccoon)
+                {
+                    Console.WriteLine("You offer the food to the raccoon...");
+                    Console.WriteLine("It happily drops the control board and runs off into the bushes!");
+                    fedRaccoon = true;
+                    hasControlBoard = true;
+                    currentRoom.RemoveItem("control board");
+                    return;
+                }
+                else
+                {
+                    Console.WriteLine("The raccoon has already been fed and ran away.");
+                    return;
+                }
+            }
+
+            if (currentRoom?.ShortDescription == "You are inside the tower.")
+            {
+                if (hasPowerCables && hasControlBoard && hasAnemometer)
+                {
+                    Console.WriteLine("You install the new components. The turbines roar back to life! Full repair complete.");
+                }
+                else if (hasFlimsyCables && hasControlBoard && hasAnemometer)
+                {
+                    Console.WriteLine("You patch the turbines with flimsy cables... They spark and strain, barely starting.");
+                    Console.WriteLine("(Temporary fix achieved. Try to find the real power cables next time!)");
+                }
+            }
 
             Console.WriteLine($"You cannot currently use the {itemName} here or you don't possess it.");
         }
